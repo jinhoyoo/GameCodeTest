@@ -10,11 +10,6 @@
 #include "gtest/gtest.h"
 
 
-TEST(CASE2, ZERO){
-    EXPECT_EQ(0, 0);
-    
-}
-
 GTEST_API_ int main(int argc, char **argv) {
     printf("Running main() from gtest_main.cc\n");
     testing::InitGoogleTest(&argc, argv);
