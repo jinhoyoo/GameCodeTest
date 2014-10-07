@@ -7,12 +7,16 @@
 //
 
 #include <iostream>
+#include "gtest/gtest.h"
 
-int main(int argc, const char * argv[])
-{
 
-    // insert code here...
-    std::cout << "Hello, World!\n";
-    return 0;
+TEST(CASE2, ZERO){
+    EXPECT_EQ(0, 0);
+    
 }
 
+GTEST_API_ int main(int argc, char **argv) {
+    printf("Running main() from gtest_main.cc\n");
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4E73B24C19E3D57E001B0673 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E73B24B19E3D57E001B0673 /* main.cpp */; };
 		4E73B24E19E3D57E001B0673 /* GameCodeTest.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4E73B24D19E3D57E001B0673 /* GameCodeTest.1 */; };
+		4E73B25A19E3D7DF001B0673 /* gtest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E73B25819E3D7DF001B0673 /* gtest.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,7 @@
 		4E73B24819E3D57E001B0673 /* GameCodeTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GameCodeTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E73B24B19E3D57E001B0673 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4E73B24D19E3D57E001B0673 /* GameCodeTest.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = GameCodeTest.1; sourceTree = "<group>"; };
+		4E73B25819E3D7DF001B0673 /* gtest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = gtest.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E73B25A19E3D7DF001B0673 /* gtest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +47,7 @@
 		4E73B23F19E3D57E001B0673 = {
 			isa = PBXGroup;
 			children = (
+				4E73B25819E3D7DF001B0673 /* gtest.framework */,
 				4E73B24A19E3D57E001B0673 /* GameCodeTest */,
 				4E73B24919E3D57E001B0673 /* Products */,
 			);
@@ -197,6 +201,17 @@
 		4E73B25219E3D57E001B0673 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libstdc++";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -204,6 +219,17 @@
 		4E73B25319E3D57E001B0673 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libstdc++";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -227,6 +253,7 @@
 				4E73B25319E3D57E001B0673 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
