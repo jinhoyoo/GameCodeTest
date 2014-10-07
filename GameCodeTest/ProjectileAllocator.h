@@ -27,6 +27,13 @@ public:
     //Release a projectile. 
     void Release(Projectile* projectile);
     
+public:
+    int GetNumberOfProjectile();
+    
+private:
+    Projectile* _projectiles;
+    int         _numProjectile;
+    
 };
 
 
