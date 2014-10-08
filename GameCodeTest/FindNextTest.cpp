@@ -25,7 +25,7 @@ std::string FindNext(std::vector<std::string> items, std::string current)
     return "";
 }
 
-std::string OptimizedFindNext(std::vector<std::string> items, std::string current)
+std::string OptimizedFindNext(std::vector<std::string> &items, std::string current)
 {
     bool returnNext = false;
     
@@ -37,6 +37,7 @@ std::string OptimizedFindNext(std::vector<std::string> items, std::string curren
             returnNext = true;
     }
     return "";
+
 }
 
 //Test fixture
@@ -63,20 +64,27 @@ protected:
 
 
 TEST_F(FindNextTest, NormalVersion){
-    std::string nextWord
-        = FindNext( _stringArray, "in");
     
-    EXPECT_EQ(nextWord, "incognito");
-    
+    for ( int i=0; i<999999; ++i) {
+        std::string nextWord
+            = FindNext( _stringArray, "in");
+        
+        EXPECT_EQ(nextWord, "incognito");
+    }
 }
 
 
 
 TEST_F(FindNextTest, OptimizedVersion){
-    std::string nextWord
-        = OptimizedFindNext( _stringArray, "in");
     
-    EXPECT_EQ(nextWord, "incognito");
+    for ( int i=0; i<999999; ++i) {
+        std::string nextWord
+        = OptimizedFindNext( _stringArray, "in");
+        
+        EXPECT_EQ(nextWord, "incognito");
+    }
+
+    
     
 }
 
