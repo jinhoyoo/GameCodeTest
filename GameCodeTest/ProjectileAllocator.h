@@ -9,6 +9,9 @@
 #ifndef __GameCodeTest__ProjectileAllocator__
 #define __GameCodeTest__ProjectileAllocator__
 
+#include <iostream>
+#include "GameCodeException.h"
+
 //Element to create
 class Projectile;
 
@@ -28,11 +31,16 @@ public:
     void Release(Projectile* projectile);
     
 public:
+    ~ProjectileAllocator();
+    
+public:
     int GetNumberOfProjectile();
     
 private:
     Projectile* _projectiles;
-    int         _numProjectile;
+    bool      * _tableUsedProjectile;
+    int         _numProjectileUsed;
+    int         _maxProjectiles;
     
 };
 

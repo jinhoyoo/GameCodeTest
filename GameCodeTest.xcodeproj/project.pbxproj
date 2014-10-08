@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4E73B24C19E3D57E001B0673 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E73B24B19E3D57E001B0673 /* main.cpp */; };
-		4E73B24E19E3D57E001B0673 /* GameCodeTest.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4E73B24D19E3D57E001B0673 /* GameCodeTest.1 */; };
 		4E73B25A19E3D7DF001B0673 /* gtest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E73B25819E3D7DF001B0673 /* gtest.framework */; };
 		4E73B25F19E3DB27001B0673 /* ProjectileAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E73B25D19E3DB27001B0673 /* ProjectileAllocator.cpp */; };
 		4E73B26219E3DBFC001B0673 /* ProjectileAllocatorTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E73B26019E3DBFC001B0673 /* ProjectileAllocatorTest.cpp */; };
@@ -21,16 +20,15 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				4E73B24E19E3D57E001B0673 /* GameCodeTest.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4E13009819E4D3C1004ACF49 /* GameCodeException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameCodeException.h; sourceTree = "<group>"; };
 		4E73B24819E3D57E001B0673 /* GameCodeTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GameCodeTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E73B24B19E3D57E001B0673 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		4E73B24D19E3D57E001B0673 /* GameCodeTest.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = GameCodeTest.1; sourceTree = "<group>"; };
 		4E73B25819E3D7DF001B0673 /* gtest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = gtest.framework; sourceTree = "<group>"; };
 		4E73B25D19E3DB27001B0673 /* ProjectileAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProjectileAllocator.cpp; sourceTree = "<group>"; };
 		4E73B25E19E3DB27001B0673 /* ProjectileAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectileAllocator.h; sourceTree = "<group>"; };
@@ -71,7 +69,7 @@
 			children = (
 				4E73B25C19E3DAAF001B0673 /* ProjectileAllocator */,
 				4E73B24B19E3D57E001B0673 /* main.cpp */,
-				4E73B24D19E3D57E001B0673 /* GameCodeTest.1 */,
+				4E13009819E4D3C1004ACF49 /* GameCodeException.h */,
 			);
 			path = GameCodeTest;
 			sourceTree = "<group>";
