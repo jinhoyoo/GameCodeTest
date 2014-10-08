@@ -79,13 +79,10 @@ TEST_F(FindNextTest, OptimizedVersion){
     
     for ( int i=0; i<999999; ++i) {
         std::string nextWord
-        = OptimizedFindNext( _stringArray, "in");
+            = OptimizedFindNext( _stringArray, "in");
         
         EXPECT_EQ(nextWord, "incognito");
     }
-
-    
-    
 }
 
 
