@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4E13009B19E4FE96004ACF49 /* FindNextTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E13009A19E4FE96004ACF49 /* FindNextTest.cpp */; };
+		4E13009E19E52277004ACF49 /* BoxFilterTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E13009D19E52277004ACF49 /* BoxFilterTest.cpp */; };
 		4E73B24C19E3D57E001B0673 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E73B24B19E3D57E001B0673 /* main.cpp */; };
 		4E73B25A19E3D7DF001B0673 /* gtest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E73B25819E3D7DF001B0673 /* gtest.framework */; };
 		4E73B25F19E3DB27001B0673 /* ProjectileAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E73B25D19E3DB27001B0673 /* ProjectileAllocator.cpp */; };
@@ -29,6 +30,7 @@
 /* Begin PBXFileReference section */
 		4E13009819E4D3C1004ACF49 /* GameCodeException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameCodeException.h; sourceTree = "<group>"; };
 		4E13009A19E4FE96004ACF49 /* FindNextTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FindNextTest.cpp; sourceTree = "<group>"; };
+		4E13009D19E52277004ACF49 /* BoxFilterTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoxFilterTest.cpp; sourceTree = "<group>"; };
 		4E73B24819E3D57E001B0673 /* GameCodeTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GameCodeTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E73B24B19E3D57E001B0673 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4E73B25819E3D7DF001B0673 /* gtest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = gtest.framework; sourceTree = "<group>"; };
@@ -57,6 +59,14 @@
 			name = FindNext;
 			sourceTree = "<group>";
 		};
+		4E13009C19E52256004ACF49 /* BoxFilter */ = {
+			isa = PBXGroup;
+			children = (
+				4E13009D19E52277004ACF49 /* BoxFilterTest.cpp */,
+			);
+			name = BoxFilter;
+			sourceTree = "<group>";
+		};
 		4E73B23F19E3D57E001B0673 = {
 			isa = PBXGroup;
 			children = (
@@ -77,6 +87,7 @@
 		4E73B24A19E3D57E001B0673 /* GameCodeTest */ = {
 			isa = PBXGroup;
 			children = (
+				4E13009C19E52256004ACF49 /* BoxFilter */,
 				4E13009919E4FE09004ACF49 /* FindNext */,
 				4E73B25C19E3DAAF001B0673 /* ProjectileAllocator */,
 				4E73B24B19E3D57E001B0673 /* main.cpp */,
@@ -149,6 +160,7 @@
 				4E73B26219E3DBFC001B0673 /* ProjectileAllocatorTest.cpp in Sources */,
 				4E13009B19E4FE96004ACF49 /* FindNextTest.cpp in Sources */,
 				4E73B25F19E3DB27001B0673 /* ProjectileAllocator.cpp in Sources */,
+				4E13009E19E52277004ACF49 /* BoxFilterTest.cpp in Sources */,
 				4E73B24C19E3D57E001B0673 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
