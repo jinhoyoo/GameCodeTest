@@ -167,7 +167,7 @@ TEST_F( BoxFilterTest, Original)
     
 }
 
-TEST_F( BoxFilterTest, LoopUnrillingOptimized)
+TEST_F( BoxFilterTest, LoopUnrollingOptimized)
 {
     const int filterSize = 3;
     
