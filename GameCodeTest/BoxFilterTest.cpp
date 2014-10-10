@@ -52,26 +52,84 @@ void BoxFilter(int filterSize,
     }
 }
 
-//Optimized  box filter
-void BoxFilterOpt(int filterSize,
-               const float* input, int width, int height,
-               float* output){
+//Loop unrolling version of box filter
+//========================================
+
+float FilterSub( int x, int y, int filterSize, int width, int height, const float* input){
+    int sampleX = MIN(MAX(0, x  -1 + filterSize), width - 1);
+    int sampleY = MIN(MAX(0, y  -1 + filterSize), height - 1);
+    
+    return input[sampleY * width + sampleX];
+}
+
+
+float LoopUnrolledBoxFilter3By3(int filterSize, int width, int height, const float* input ){
+    
+    float sum = 0.0f;
+    
+    //(-1, -1)
+    sum += FilterSub( -1, -1, filterSize, width, height, input);
+
+    //(0, -1)
+    sum += FilterSub( 0, -1, filterSize, width, height, input);
+
+    //(1, -1)
+    sum += FilterSub( 1, -1, filterSize, width, height, input);
+
+    //(-1, 0)
+    sum += FilterSub( -1, 0, filterSize, width, height, input);
+    
+    //( 0, 0)
+    sum += FilterSub( 0, 0, filterSize, width, height, input);
+    
+    //( 1, 0)
+    sum += FilterSub( 1, 0, filterSize, width, height, input);
+
+    //(-1, 1)
+    sum += FilterSub( -1, 1, filterSize, width, height, input);
+    
+    //( 0, 1)
+    sum += FilterSub( 0, 1, filterSize, width, height, input);
+    
+    //( 1, 1)
+    sum += FilterSub( 1, 1, filterSize, width, height, input);
+
+    return sum;
+    
+}
+
+
+
+void BoxFilterLoopUnrolling(int filterSize,
+                  const float* input, int width, int height,
+                  float* output){
     
     for (int x = 0; x < width; ++x){
         for (int y = 0; y < height; ++y){
             
             float sum = 0.f;
-            for (int ix = -filterSize; ix <= filterSize; ++ix) {
-                for (int iy = -filterSize; iy <= filterSize; ++iy) {
-                    int sampleX = MIN(MAX(0, x + ix + filterSize), width - 1);
-                    int sampleY = MIN(MAX(0, y + iy + filterSize), height - 1);
-                    sum += input[sampleY * width + sampleX];
-                }
+            
+            switch (filterSize) {
+                case 3:
+                    sum = LoopUnrolledBoxFilter3By3(filterSize, width, height, input);
+                    break;
+                    
+                default: //Naive implementation for different filter size.
+                    for (int ix = -filterSize; ix <= filterSize; ++ix) {
+                        for (int iy = -filterSize; iy <= filterSize; ++iy) {
+                            int sampleX = MIN(MAX(0, x + ix + filterSize), width - 1);
+                            int sampleY = MIN(MAX(0, y + iy + filterSize), height - 1);
+                            sum += input[sampleY * width + sampleX];
+                        }
+                    }
+                    break;
             }
+            
             output[y * width + x] = sum / (filterSize * filterSize);
         }
     }
 }
+//========================================
 
 
 
@@ -109,13 +167,13 @@ TEST_F( BoxFilterTest, Original)
     
 }
 
-TEST_F( BoxFilterTest, Optimized)
+TEST_F( BoxFilterTest, LoopUnrillingOptimized)
 {
     const int filterSize = 3;
     
     for ( int i=0; i<999; ++i) {
         
-        BoxFilterOpt( filterSize,
+        BoxFilterLoopUnrolling( filterSize,
                   _pTwoDArray, gWidth, gHeight,
                   _pOutputArray);
     }
