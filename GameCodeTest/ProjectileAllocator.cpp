@@ -40,7 +40,7 @@ Projectile* ProjectileAllocator::Alloc(){
 }
 
 
-int ProjectileAllocator::GetNumberOfProjectile(){
+int ProjectileAllocator::GetNumberOfProjectile() const{
     return _numProjectileUsed;
 }
 

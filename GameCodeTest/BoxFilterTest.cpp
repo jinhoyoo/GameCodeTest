@@ -32,6 +32,7 @@ float gTwoDArray[] = { 4.318797407324599, 3.087788067624083, 1.1943658087838842,
 
 
 //Original box filter
+//========================================
 void BoxFilter(int filterSize,
                const float* input, int width, int height,
                float* output){
@@ -129,7 +130,6 @@ void BoxFilterLoopUnrolling(int filterSize,
         }
     }
 }
-//========================================
 
 
 
@@ -153,6 +153,9 @@ public:
     
 };
 
+
+// Test code
+//==================================
 
 TEST_F( BoxFilterTest, Original)
 {

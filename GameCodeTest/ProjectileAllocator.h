@@ -34,7 +34,7 @@ public:
     ~ProjectileAllocator();
     
 public:
-    int GetNumberOfProjectile();
+    int GetNumberOfProjectile() const;
     
 private:
     Projectile* _projectiles;
