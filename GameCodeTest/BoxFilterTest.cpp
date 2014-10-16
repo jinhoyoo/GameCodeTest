@@ -214,7 +214,7 @@ TEST_F( BoxFilterTest, Original)
 {
     const int filterSize = 1; //3x3
     
-    for ( int i=0; i<999; ++i) {
+    for ( int i=0; i<9999; ++i) {
 
         BoxFilter( filterSize,
                   _pTwoDArray, gWidth, gHeight,
@@ -227,7 +227,7 @@ TEST_F( BoxFilterTest, LoopUnrollingOptimized)
 {
     const int filterSize = 1; //3x3
     
-    for ( int i=0; i<999; ++i) {
+    for ( int i=0; i<9999; ++i) {
         
         BoxFilterLoopUnrolling( filterSize,
                   _pTwoDArray, gWidth, gHeight,
