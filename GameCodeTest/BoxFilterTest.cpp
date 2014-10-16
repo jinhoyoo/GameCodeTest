@@ -60,68 +60,70 @@ void BoxFilter(int filterSize,
 //Loop unrolling version of box filter
 //========================================
 
-float FilterSub( int x, int y, int ix, int iy, int filterSize, int width, int height, const float* input){
-    
-    int sampleX = MIN(MAX(0, x + ix + filterSize), width-1);
-    int sampleY = MIN(MAX(0, y + iy + filterSize), height-1);
-    
-    return input[sampleY * width + sampleX];
-}
-
-int GetAddress( int x, int y, int ix, int iy, int filterSize, int width, int height){
-    
-    int sampleX = MIN(MAX(0, x + ix + filterSize), width-1);
-    int sampleY = MIN(MAX(0, y + iy + filterSize), height-1);
-    
-    return sampleY * width + sampleX;
-}
-
-
-
 float LoopUnrolledBoxFilter3By3( int x, int y, int width, int height, const float* input ){
     
     const int filterSize = 1;
     float sum = 0.0f;
     int addr;
-    
+    int sampleX;
+    int sampleY;
+
     //(-1, -1)
-    addr = GetAddress(x, y, -1, -1, filterSize, width, height);
+    sampleX = MIN(MAX(0, x -1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y -1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
     sum +=  input[addr];
 
     //(0, -1)
-    addr = GetAddress(x, y, 0, -1, filterSize, width, height);
+    sampleX = MIN(MAX(0, x +0 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y -1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
     sum += input[addr];
 
     //(1, -1)
-    addr = GetAddress( x, y, 1, -1, filterSize, width, height);
+    sampleX = MIN(MAX(0, x +1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y -1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
     sum += input[addr];
-    
     
     
     //(-1, 0)
-    addr = GetAddress(x, y, -1, 0, filterSize, width, height);
+    sampleX = MIN(MAX(0, x -1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y +0 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
     sum += input[addr];
     
     //( 0, 0)
-    addr = GetAddress(x, y, 0, 0, filterSize, width, height);
+    sampleX = MIN(MAX(0, x +0 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y +0 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
     sum += input[addr];
     
     //( 1, 0)
-    addr = GetAddress(x, y, 1, 0, filterSize, width, height);
+    sampleX = MIN(MAX(0, x +1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y +0 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
     sum += input[addr];
-
+    
+    
     
     //(-1, 1)
-    addr = GetAddress(x, y, -1, 1, filterSize, width, height);
+    sampleX = MIN(MAX(0, x - 1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y + 1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
     sum += input[addr];
     
     //( 0, 1)
-    addr = GetAddress(x, y,  0, 1, filterSize, width, height);
+    sampleX = MIN(MAX(0, x + 0 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y + 1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
     sum += input[addr];
 
     
     //( 1, 1)
-    addr = GetAddress(x, y,  1, 1, filterSize, width, height);
+    sampleX = MIN(MAX(0, x + 1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y + 1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
     sum += input[addr];
 
 
