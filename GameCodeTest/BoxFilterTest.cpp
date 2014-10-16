@@ -68,38 +68,62 @@ float FilterSub( int x, int y, int ix, int iy, int filterSize, int width, int he
     return input[sampleY * width + sampleX];
 }
 
+int GetAddress( int x, int y, int ix, int iy, int filterSize, int width, int height){
+    
+    int sampleX = MIN(MAX(0, x + ix + filterSize), width-1);
+    int sampleY = MIN(MAX(0, y + iy + filterSize), height-1);
+    
+    return sampleY * width + sampleX;
+}
+
+
 
 float LoopUnrolledBoxFilter3By3( int x, int y, int width, int height, const float* input ){
     
     const int filterSize = 1;
     float sum = 0.0f;
+    int addr;
     
     //(-1, -1)
-    sum += FilterSub( x, y, -1, -1, filterSize, width, height, input);
+    addr = GetAddress(x, y, -1, -1, filterSize, width, height);
+    sum +=  input[addr];
 
     //(0, -1)
-    sum += FilterSub( x, y, 0, -1, filterSize, width, height, input);
+    addr = GetAddress(x, y, 0, -1, filterSize, width, height);
+    sum += input[addr];
 
     //(1, -1)
-    sum += FilterSub( x, y, 1, -1, filterSize, width, height, input);
-
+    addr = GetAddress( x, y, 1, -1, filterSize, width, height);
+    sum += input[addr];
+    
+    
+    
     //(-1, 0)
-    sum += FilterSub( x, y, -1, 0, filterSize, width, height, input);
+    addr = GetAddress(x, y, -1, 0, filterSize, width, height);
+    sum += input[addr];
     
     //( 0, 0)
-    sum += FilterSub( x, y, 0, 0, filterSize, width, height, input);
+    addr = GetAddress(x, y, 0, 0, filterSize, width, height);
+    sum += input[addr];
     
     //( 1, 0)
-    sum += FilterSub( x, y, 1, 0, filterSize, width, height, input);
+    addr = GetAddress(x, y, 1, 0, filterSize, width, height);
+    sum += input[addr];
 
+    
     //(-1, 1)
-    sum += FilterSub( x, y, -1, 1, filterSize, width, height, input);
+    addr = GetAddress(x, y, -1, 1, filterSize, width, height);
+    sum += input[addr];
     
     //( 0, 1)
-    sum += FilterSub( x, y, 0, 1, filterSize, width, height, input);
+    addr = GetAddress(x, y,  0, 1, filterSize, width, height);
+    sum += input[addr];
+
     
     //( 1, 1)
-    sum += FilterSub( x, y, 1, 1, filterSize, width, height, input);
+    addr = GetAddress(x, y,  1, 1, filterSize, width, height);
+    sum += input[addr];
+
 
     return sum;
     
