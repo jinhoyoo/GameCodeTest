@@ -69,8 +69,9 @@ float FilterSub( int x, int y, int ix, int iy, int filterSize, int width, int he
 }
 
 
-float LoopUnrolledBoxFilter3By3(int filterSize, int x, int y, int width, int height, const float* input ){
+float LoopUnrolledBoxFilter3By3( int x, int y, int width, int height, const float* input ){
     
+    const int filterSize = 1;
     float sum = 0.0f;
     
     //(-1, -1)
@@ -117,7 +118,7 @@ void BoxFilterLoopUnrolling(int filterSize,
             
             switch (filterSize) {
                 case 1: //3x3
-                    sum = LoopUnrolledBoxFilter3By3(filterSize, x, y, width, height, input);
+                    sum = LoopUnrolledBoxFilter3By3( x, y, width, height, input);
                     break;
                     
                 default: //Naive implementation for different filter size.
