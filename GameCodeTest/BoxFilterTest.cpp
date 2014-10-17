@@ -222,8 +222,6 @@ float SIMDBoxFilter3By3( int x, int y, int width, int height, const float* input
             input[ _mm_extract_epi16(mAddr, 7) ];
  
     
-    
-    //=====================================
     //( 1, 1)
     sampleX = MIN(MAX(0, x + 1 + filterSize), width-1);
     sampleY = MIN(MAX(0, y + 1 + filterSize), height-1);
