@@ -10,6 +10,8 @@
 #include <vector>
 #include <string>
 #include "gtest/gtest.h"
+
+#include <smmintrin.h>
 #include <emmintrin.h> // Define entities up to and including SSE2.
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
@@ -106,7 +108,6 @@ float LoopUnrolledBoxFilter3By3( int x, int y, int width, int height, const floa
     sum += input[addr];
     
     
-    
     //(-1, 1)
     sampleX = MIN(MAX(0, x - 1 + filterSize), width-1);
     sampleY = MIN(MAX(0, y + 1 + filterSize), height-1);
@@ -166,6 +167,179 @@ void BoxFilterLoopUnrolling(int filterSize,
 
 //SIMD box filter
 //========================================
+float SIMDBoxFilter3By3( int x, int y, int width, int height, const float* input ){
+    
+    const int filterSize = 1;
+    float sum = 0.0f;
+    int addr;
+    int sampleX;
+    int sampleY;
+
+    
+    __m128i mZero = _mm_set1_epi32(0);
+    __m128i mXbound = _mm_set1_epi32(width-1);
+    __m128i mYbound = _mm_set1_epi32(height-1);
+    __m128i mWidth = _mm_set1_epi32(width);
+    
+    
+    //Calculate position of buffer
+    //(-1, -1), (0, -1), (1, -1), (-1, 0)
+    __m128i xpos = _mm_set_epi32(x-1+filterSize,
+                                 x+0+filterSize,
+                                 x+1+filterSize,
+                                 x-1+filterSize);
+    
+    __m128i ypos = _mm_set_epi32(y-1+filterSize,
+                                 y-1+filterSize,
+                                 y-1+filterSize,
+                                 y+0+filterSize);
+
+    xpos = _mm_max_epi32( xpos, mZero);
+    xpos = _mm_min_epi32( xpos, mXbound);
+    
+    ypos = _mm_max_epi32( ypos, mZero);
+    ypos = _mm_min_epi32( ypos, mYbound);
+
+    __m128i mAddr = _mm_mulhi_epu16 (ypos, mWidth);
+    mAddr = _mm_mullo_epi16 (ypos, mWidth);
+    mAddr = _mm_add_epi32(mAddr, xpos);
+    
+    int a1 = _mm_extract_epi32(mAddr, 3);
+    int a2 = _mm_extract_epi32(mAddr, 2);
+    int a3 = _mm_extract_epi32(mAddr, 1);
+    int a4 = _mm_extract_epi32(mAddr, 0);
+    
+    sum = input[a1] + input[a2] + input[a3] + input[a4];
+ 
+    
+    
+    //Calculate position of buffer
+    //( 0, 0), ( 1, 0), (-1, 1), ( 0, 1)
+    xpos = _mm_set_epi32(x+0+filterSize,
+                         x+1+filterSize,
+                         x-1+filterSize,
+                         x+0+filterSize);
+    
+    ypos = _mm_set_epi32(y+0+filterSize,
+                         y+0+filterSize,
+                         y+1+filterSize,
+                         y+1+filterSize);
+    
+    xpos = _mm_max_epi32( xpos, mZero);
+    xpos = _mm_min_epi32( xpos, mXbound);
+    
+    ypos = _mm_max_epi32( ypos, mZero);
+    ypos = _mm_min_epi32( ypos, mYbound);
+    
+    mAddr = _mm_mulhi_epu16 (ypos, mWidth);
+    mAddr = _mm_mullo_epi16 (ypos, mWidth);
+    mAddr = _mm_add_epi32(mAddr, xpos);
+    
+    a1 = _mm_extract_epi32(mAddr, 3);
+    a2 = _mm_extract_epi32(mAddr, 2);
+    a3 = _mm_extract_epi32(mAddr, 1);
+    a4 = _mm_extract_epi32(mAddr, 0);
+    
+    sum += input[a1] + input[a2] + input[a3] + input[a4];
+
+    
+    /*
+    //(-1, -1)
+    sampleX = MIN(MAX(0, x -1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y -1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
+    sum +=  input[addr];
+    
+    //(0, -1)
+    sampleX = MIN(MAX(0, x +0 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y -1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
+    sum += input[addr];
+    
+    //(1, -1)
+    sampleX = MIN(MAX(0, x +1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y -1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
+    sum += input[addr];
+    
+    
+    //(-1, 0)
+    sampleX = MIN(MAX(0, x -1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y +0 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
+    sum += input[addr];
+    
+
+    
+    //( 0, 0)
+    sampleX = MIN(MAX(0, x +0 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y +0 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
+    sum += input[addr];
+    
+    //( 1, 0)
+    sampleX = MIN(MAX(0, x +1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y +0 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
+    sum += input[addr];
+    
+    
+    //(-1, 1)
+    sampleX = MIN(MAX(0, x - 1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y + 1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
+    sum += input[addr];
+    
+    //( 0, 1)
+    sampleX = MIN(MAX(0, x + 0 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y + 1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
+    sum += input[addr];
+    */
+    
+    //=====================================
+    //( 1, 1)
+    sampleX = MIN(MAX(0, x + 1 + filterSize), width-1);
+    sampleY = MIN(MAX(0, y + 1 + filterSize), height-1);
+    addr = sampleY * width + sampleX;
+    sum += input[addr];
+    
+    
+    return sum;
+    
+}
+
+
+
+void BoxFilterSIMD(int filterSize,
+                            const float* input, int width, int height,
+                            float* output){
+    
+    for (int x = 0; x < width; ++x){
+        for (int y = 0; y < height; ++y){
+            
+            float sum = 0.f;
+            
+            switch (filterSize) {
+                case 1: //3x3
+                    sum = SIMDBoxFilter3By3(x, y, width, height, input);
+                    break;
+                    
+                default: //Naive implementation for different filter size.
+                    for (int ix = -filterSize; ix <= filterSize; ++ix) {
+                        for (int iy = -filterSize; iy <= filterSize; ++iy) {
+                            int sampleX = MIN(MAX(0, x + ix + filterSize), width - 1);
+                            int sampleY = MIN(MAX(0, y + iy + filterSize), height - 1);
+                            sum += input[sampleY * width + sampleX];
+                        }
+                    }
+                    break;
+            }
+            
+            output[y * width + x] = sum / (filterSize * filterSize);
+        }
+    }
+}
 
 
 
@@ -193,10 +367,10 @@ protected:
         
         //Test result
         for (int i=0; i<gWidth* gHeight ; ++i) {
-            EXPECT_LE( fabs(_pOutputArray[i] - _pExpectedResult[i]),
+            EXPECT_LE( fabs( _pOutputArray[i]-
+                            _pExpectedResult[i] ),
                       0.001f);
         }
-        
         
         delete [] _pOutputArray;
     }
@@ -223,6 +397,7 @@ TEST_F( BoxFilterTest, Original)
     
 }
 
+
 TEST_F( BoxFilterTest, LoopUnrollingOptimized)
 {
     const int filterSize = 1; //3x3
@@ -236,18 +411,17 @@ TEST_F( BoxFilterTest, LoopUnrollingOptimized)
     
 }
 
-/*
+
 TEST_F( BoxFilterTest, SIMDOptimized)
 {
-    const int filterSize = 3;
+    const int filterSize = 1; //3x3
     
     
-    for ( int i=0; i<999; ++i) {
+    for ( int i=0; i<9999; ++i) {
         
-        BoxFilterSIMD(filterSize,
+        BoxFilterSIMD( filterSize,
                       _pTwoDArray, gWidth, gHeight,
                       _pOutputArray);
     }
 
 }
-*/
