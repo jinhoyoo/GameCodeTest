@@ -176,126 +176,52 @@ float SIMDBoxFilter3By3( int x, int y, int width, int height, const float* input
     int sampleY;
 
     
-    __m128i mZero = _mm_set1_epi32(0);
-    __m128i mXbound = _mm_set1_epi32(width-1);
-    __m128i mYbound = _mm_set1_epi32(height-1);
-    __m128i mWidth = _mm_set1_epi32(width);
+    __m128i mZero = _mm_set1_epi16(0);
+    __m128i mXbound = _mm_set1_epi16(width-1);
+    __m128i mYbound = _mm_set1_epi16(height-1);
+    __m128i mWidth = _mm_set1_epi16(width);
     
     
     //Calculate position of buffer
     //(-1, -1), (0, -1), (1, -1), (-1, 0)
-    __m128i xpos = _mm_set_epi32(x-1+filterSize,
+    //( 0, 0), ( 1, 0), (-1, 1), ( 0, 1)
+    __m128i xpos = _mm_set_epi16(x-1+filterSize,
                                  x+0+filterSize,
                                  x+1+filterSize,
-                                 x-1+filterSize);
+                                 x-1+filterSize,
+                                 x+0+filterSize,
+                                 x+1+filterSize,
+                                 x-1+filterSize,
+                                 x+0+filterSize);
     
-    __m128i ypos = _mm_set_epi32(y-1+filterSize,
+    __m128i ypos = _mm_set_epi16(y-1+filterSize,
                                  y-1+filterSize,
                                  y-1+filterSize,
-                                 y+0+filterSize);
+                                 y+0+filterSize,
+                                 y+0+filterSize,
+                                 y+0+filterSize,
+                                 y+1+filterSize,
+                                 y+1+filterSize);
 
-    xpos = _mm_max_epi32( xpos, mZero);
-    xpos = _mm_min_epi32( xpos, mXbound);
+    xpos = _mm_max_epi16( xpos, mZero);
+    xpos = _mm_min_epi16( xpos, mXbound);
     
-    ypos = _mm_max_epi32( ypos, mZero);
-    ypos = _mm_min_epi32( ypos, mYbound);
+    ypos = _mm_max_epi16( ypos, mZero);
+    ypos = _mm_min_epi16( ypos, mYbound);
 
-    __m128i mAddr = _mm_mulhi_epu16 (ypos, mWidth);
-    mAddr = _mm_mullo_epi16 (ypos, mWidth);
-    mAddr = _mm_add_epi32(mAddr, xpos);
+    __m128i mAddr = _mm_mullo_epi16 (ypos, mWidth);
+    mAddr = _mm_add_epi16(mAddr, xpos);
     
-    int a1 = _mm_extract_epi32(mAddr, 3);
-    int a2 = _mm_extract_epi32(mAddr, 2);
-    int a3 = _mm_extract_epi32(mAddr, 1);
-    int a4 = _mm_extract_epi32(mAddr, 0);
-    
-    sum = input[a1] + input[a2] + input[a3] + input[a4];
+    sum = input[ _mm_extract_epi16(mAddr, 0) ] +
+            input[ _mm_extract_epi16(mAddr, 1) ] +
+            input[ _mm_extract_epi16(mAddr, 2) ] +
+            input[ _mm_extract_epi16(mAddr, 3) ] +
+            input[ _mm_extract_epi16(mAddr, 4) ] +
+            input[ _mm_extract_epi16(mAddr, 5) ] +
+            input[ _mm_extract_epi16(mAddr, 6) ] +
+            input[ _mm_extract_epi16(mAddr, 7) ];
  
     
-    
-    //Calculate position of buffer
-    //( 0, 0), ( 1, 0), (-1, 1), ( 0, 1)
-    xpos = _mm_set_epi32(x+0+filterSize,
-                         x+1+filterSize,
-                         x-1+filterSize,
-                         x+0+filterSize);
-    
-    ypos = _mm_set_epi32(y+0+filterSize,
-                         y+0+filterSize,
-                         y+1+filterSize,
-                         y+1+filterSize);
-    
-    xpos = _mm_max_epi32( xpos, mZero);
-    xpos = _mm_min_epi32( xpos, mXbound);
-    
-    ypos = _mm_max_epi32( ypos, mZero);
-    ypos = _mm_min_epi32( ypos, mYbound);
-    
-    mAddr = _mm_mulhi_epu16 (ypos, mWidth);
-    mAddr = _mm_mullo_epi16 (ypos, mWidth);
-    mAddr = _mm_add_epi32(mAddr, xpos);
-    
-    a1 = _mm_extract_epi32(mAddr, 3);
-    a2 = _mm_extract_epi32(mAddr, 2);
-    a3 = _mm_extract_epi32(mAddr, 1);
-    a4 = _mm_extract_epi32(mAddr, 0);
-    
-    sum += input[a1] + input[a2] + input[a3] + input[a4];
-
-    
-    /*
-    //(-1, -1)
-    sampleX = MIN(MAX(0, x -1 + filterSize), width-1);
-    sampleY = MIN(MAX(0, y -1 + filterSize), height-1);
-    addr = sampleY * width + sampleX;
-    sum +=  input[addr];
-    
-    //(0, -1)
-    sampleX = MIN(MAX(0, x +0 + filterSize), width-1);
-    sampleY = MIN(MAX(0, y -1 + filterSize), height-1);
-    addr = sampleY * width + sampleX;
-    sum += input[addr];
-    
-    //(1, -1)
-    sampleX = MIN(MAX(0, x +1 + filterSize), width-1);
-    sampleY = MIN(MAX(0, y -1 + filterSize), height-1);
-    addr = sampleY * width + sampleX;
-    sum += input[addr];
-    
-    
-    //(-1, 0)
-    sampleX = MIN(MAX(0, x -1 + filterSize), width-1);
-    sampleY = MIN(MAX(0, y +0 + filterSize), height-1);
-    addr = sampleY * width + sampleX;
-    sum += input[addr];
-    
-
-    
-    //( 0, 0)
-    sampleX = MIN(MAX(0, x +0 + filterSize), width-1);
-    sampleY = MIN(MAX(0, y +0 + filterSize), height-1);
-    addr = sampleY * width + sampleX;
-    sum += input[addr];
-    
-    //( 1, 0)
-    sampleX = MIN(MAX(0, x +1 + filterSize), width-1);
-    sampleY = MIN(MAX(0, y +0 + filterSize), height-1);
-    addr = sampleY * width + sampleX;
-    sum += input[addr];
-    
-    
-    //(-1, 1)
-    sampleX = MIN(MAX(0, x - 1 + filterSize), width-1);
-    sampleY = MIN(MAX(0, y + 1 + filterSize), height-1);
-    addr = sampleY * width + sampleX;
-    sum += input[addr];
-    
-    //( 0, 1)
-    sampleX = MIN(MAX(0, x + 0 + filterSize), width-1);
-    sampleY = MIN(MAX(0, y + 1 + filterSize), height-1);
-    addr = sampleY * width + sampleX;
-    sum += input[addr];
-    */
     
     //=====================================
     //( 1, 1)
